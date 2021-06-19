@@ -1,22 +1,9 @@
 package ir.ac.kntu;
 
-import javafx.application.Application;
-import javafx.geometry.Point3D;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Box;
-import javafx.scene.shape.CullFace;
-import javafx.stage.Stage;
-
 import java.util.*;
 
-public class Main extends Application {
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-        Group root = new Group();
-        Scene scene = new Scene(root, 1300, 700, Color.BLACK);
+public class Main{
+    public static void main(String[] args){
         Point[] allPoints = initialValue();
 
         Point[] xArr = Arrays.copyOf(allPoints, allPoints.length);
@@ -26,48 +13,25 @@ public class Main extends Application {
         Arrays.sort(yArr , (p1,p2) -> p1.getY()-p2.getY());
 
         System.out.println("The minimum distance is : " + divideAndConquer(xArr, yArr, allPoints.length));
-
-//        Box box = new Box();
-//        box.setWidth(200.0);
-//        box.setHeight(400.0);
-//        box.setDepth(200.0);
-//        box.setCullFace(CullFace.FRONT);
-//        root.getChildren().add(box);
-//        for(Point point : allPoints){
-////            root.getChildren().add(new Circle(point.getX() , point.getY() , 3 , Color.RED));
-//            root.getChildren().add(new Point3D(point.getX() , point.getY(), point.getZ()));
-//        }
-//
-//        root.getChildren().add(new Line(minX , minY , maxX , minY));
-//        root.getChildren().add(new Line(minX , minY , minX , maxY));
-//        root.getChildren().add(new Line(minX , maxY , maxX , maxY));
-//        root.getChildren().add(new Line(maxX , minY , maxX , maxY));
-//
-//
-//
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Let's find minimum distance!");
-        primaryStage.setResizable(false);
-        primaryStage.show();
-    }
-    public static void main(String[] args){
-        launch(args);
     }
 
     public static Point[] initialValue(){
-        Point[] array = { new Point(500,800,200), new Point(0,0,0),new Point(10,90,100),
-                new Point(179,990,10), new Point(0,0,0) };
+        Point[] array = {   new Point(500,800,200),
+                            new Point(0,0,0),
+                            new Point(10,90,100),
+                            new Point(179,990,10),
+                            new Point(0,0,1) };
 
         return array;
     }
 
 
-    public static double closest(Point p[], int n ){
-        double closestDist = p[0].distance(p[1]); // Give a very big number to find minimum distances.
+    public static double closest(Point points[], int n ){
+        double closestDist = points[0].distance(points[1]); // Give a very big number to find minimum distances.
         for (int x = 0; x < n; x++){
             for (int y = x + 1; y < n; y++){
-                if (p[x].distance(p[y]) < closestDist)
-                    closestDist = p[x].distance(p[y]);
+                if (points[x].distance(points[y]) < closestDist)
+                    closestDist = points[x].distance(points[y]);
             }
         }
         return closestDist;
@@ -79,20 +43,20 @@ public class Main extends Application {
         int intermediate = size / 2;
         Point midPoint = px[intermediate];
 
-        Point[] leftpart = new Point[intermediate + 1];
-        Point[] rightpart = new Point[size - intermediate +1];
+        Point[] leftSide = new Point[intermediate + 1];
+        Point[] rightSide = new Point[size - intermediate +1];
 
         int left = 0, right = 0;
 
         for (int a = 0; a < size; a++) {
             if (py[a].getX() <= midPoint.getX())
-                leftpart[left++] = py[a];
+                leftSide[left++] = py[a];
             else
-                rightpart[right++] = py[a];
+                rightSide[right++] = py[a];
         }
 
-        double lengthl = divideAndConquer(px, leftpart, intermediate);
-        double lengthr = divideAndConquer(px, rightpart, size - intermediate);
+        double lengthl = divideAndConquer(px, leftSide, intermediate);
+        double lengthr = divideAndConquer(px, rightSide, size - intermediate);
 
         double smallest = Math.min(lengthl, lengthr);
 
@@ -140,15 +104,6 @@ class Point{
 
     public int getZ() {
         return z;
-    }
-
-    @Override
-    public String toString() {
-        return "Point{" +
-                "x=" + x +
-                ", y=" + y +
-                ", z=" + z +
-                '}';
     }
 
     public double distance(Point second){
