@@ -16,10 +16,11 @@ public class Main{
     }
 
     public static Point[] initialValue(){
-        Point[] array = {   new Point(500,800,200),
+
+        Point[] array = {   new Point(5,8,2),
                             new Point(0,0,0),
-                            new Point(10,90,100),
-                            new Point(179,990,10),
+                            new Point(10,9,9),
+                            new Point(7,9,1),
                             new Point(0,0,1) };
 
         return array;
